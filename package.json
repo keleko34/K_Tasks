@@ -1,13 +1,14 @@
 {
-  "name": "KC",
+  "name": "K_Tasks",
   "version": "0.0.1",
-  "description": "A series of chainable components for use in projects",
+  "description": "Gulp tasks for quick tasks",
   "keywords": [
-    "components"
+    "tasks",
+    "gulp"
   ],
-  "homepage": "https://github.com/keleko34/KC",
+  "homepage": "https://github.com/keleko34/K_Tasks",
   "bugs": {
-    "url": "https://github.com/keleko34/KC",
+    "url": "https://github.com/keleko34/K_Tasks",
     "email": "Gregory.Guidero@Gmail.com"
   },
   "license": "(MIT OR Apache-2.0)",
@@ -20,11 +21,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/keleko34/KC"
+    "url": "https://github.com/keleko34/K_Tasks"
   },
   "scripts": {
-    "installer": "npm i git+https://github.com/keleko34/gulp.git -g && npm i && bower i",
-    "i": "npm i git+https://github.com/keleko34/gulp.git -g && npm i && bower i",
+    "installer": "npm i git+https://github.com/keleko34/gulp.git -g && npm i",
+    "i": "npm i git+https://github.com/keleko34/gulp.git -g && npm i",
     "task": "node_modules\\.bin\\gulp task --silent",
     "bower": "node_modules\\.bin\\gulp bower --silent",
     "create": "node_modules\\.bin\\gulp create --silent",
