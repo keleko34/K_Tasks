@@ -1,0 +1,52 @@
+{
+  "name": "KC",
+  "version": "0.0.1",
+  "description": "A series of chainable components for use in projects",
+  "keywords": [
+    "components"
+  ],
+  "homepage": "https://github.com/keleko34/KC",
+  "bugs": {
+    "url": "https://github.com/keleko34/KC",
+    "email": "Gregory.Guidero@Gmail.com"
+  },
+  "license": "(MIT OR Apache-2.0)",
+  "contributors": [
+    {
+      "name": "Gregory Guidero",
+      "email": "Gregory.Guidero@Gmail.com",
+      "url": "http://keleko.io"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/keleko34/KC"
+  },
+  "scripts": {
+    "installer": "npm i git+https://github.com/keleko34/gulp.git -g && npm i && bower i",
+    "i": "npm i git+https://github.com/keleko34/gulp.git -g && npm i && bower i",
+    "task": "node_modules\\.bin\\gulp task --silent",
+    "bower": "node_modules\\.bin\\gulp bower --silent",
+    "create": "node_modules\\.bin\\gulp create --silent",
+    "build": "node_modules\\.bin\\gulp build --silent",
+    "server": "node_modules\\.bin\\gulp server --silent"
+  },
+  "devDependencies": {
+    "commander": "^2.9.0",
+    "gulp": "^3.9.0",
+    "gulp-bower": "0.0.13",
+    "gulp-closure-compiler": "^0.4.0",
+    "gulp-connect": "^4.1.0",
+    "gulp-cssmin": "^0.1.7",
+    "gulp-file": "^0.2.0",
+    "gulp-inject": "^3.0.0",
+    "gulp-insert": "^0.5.0",
+    "gulp-prompt": "^0.1.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
+    "gulp-search": "^1.0.0",
+    "gulp-util": "^3.0.7",
+    "js-beautify": "^1.6.3"
+  },
+  "dependencies": {}
+}
