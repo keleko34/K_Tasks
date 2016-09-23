@@ -3,7 +3,7 @@ var gulp = require('gulp'),
     fs = require('fs'),
     base = require('./../../Base');
 
-var config = global.gulp.config;
+var config = global.gulp.config.Tasks.Build;
 
 module.exports = function(){
 
@@ -11,7 +11,7 @@ module.exports = function(){
     if(res.Type !== undefined && key === 'Name'){
       try
       {
-        var exists = fs.statSync('./'+config.Build.src+'/' + res.Type + '/' + res.Name + '/' + res.Name + '.js');
+        var exists = fs.statSync('./'+config.src+'/' + res.Type + '/' + res.Name + '/' + res.Name + '.js');
         if(!exists || !exists.isFile()){
           console.error('\033[31mThere is no ' + res.Type + ' by the name:\033[37m ',res.Name);
           process.exit(1);
@@ -35,7 +35,7 @@ module.exports = function(){
   }
 
   function commandCallback(res){
-    var env = config.Tasks.Build.subtasks[res.SubTask];
+    var env = config.subtasks[res.SubTask];
     return function(){
 
       console.log((res.currentrule > 0 ? ('Finished task '+env[res.currentrule-1]) : ''));
@@ -56,7 +56,7 @@ module.exports = function(){
       res.currentrule = 0;
     }
     else{
-      res.currentrule = config.Tasks.Build.subtasks[res.SubTask].indexOf(res.Environment);
+      res.currentrule = config.subtasks[res.SubTask].indexOf(res.Environment);
     }
     commandCallback(res).call();
   }

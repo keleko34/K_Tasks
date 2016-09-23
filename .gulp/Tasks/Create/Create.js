@@ -3,12 +3,12 @@ var gulp = require('gulp')
   , fs = require('fs')
   , base = require('./../../Base');
 
-var config = global.gulp.config;
+var config = global.gulp.config.Tasks.Create;
 
 module.exports = function(){
 
   function onFinished(res){
-
+    console.log('Finished Creating \033[36m',res.type,' ',res.Name,'\033[37m You can find it in \033[36m','/'+config.src+'/'+res.Type+'/'+res.Name+'/ \033[37m');
   }
 
   function Exists(key,res){
@@ -16,7 +16,7 @@ module.exports = function(){
       try
       {
         res.Name = res.Name.toLowerCase();
-        var exists = fs.statSync('./'+config.Create.src+'/' + res.Type + '/' + res.Name);
+        var exists = fs.statSync('./'+config.src+'/' + res.Type + '/' + res.Name);
         if(exists){
           console.error('\033[31mThere is already something by the name: \033[37m',res.Name,' in ',res.Type);
           process.exit(1);
@@ -33,7 +33,9 @@ module.exports = function(){
   }
 
   function Command(res){
-    var files = fs.readdirSync('./.gulp/Tasks/Create/Templates/'+res.Type);
+    var files = fs.readdirSync('./.gulp/Tasks/Create/Templates/'+res.Type),
+        len = files.length,
+        count = 0;
     files.forEach(function(f,i){
       var template = fs.readFileSync('./.gulp/Tasks/Create/Templates/' + res.Type + '/'+f,'utf8'),
           resKeys = Object.keys(res);
@@ -73,10 +75,14 @@ module.exports = function(){
       template = template.replace(/(\$(.*?)\[(.*?)\])/g,'');
       template = template.replace(/(\$(.*?))/g,'');
       var copy = file('./'+f,template,{src:true})
-      .pipe(gulp.dest('./'+config.Create.src+'/'+ res.Type + '/' + res.Name));
+      .pipe(gulp.dest('./'+config.src+'/'+ res.Type + '/' + res.Name));
 
       copy.on('end',function(e){
-        console.log(e);
+        count += 1;
+        if(count >= len)
+        {
+          onFinished(res);
+        }
       })
     });
   };

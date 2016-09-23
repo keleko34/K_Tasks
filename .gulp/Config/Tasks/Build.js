@@ -11,7 +11,7 @@ module.exports = {
         type:'list',
         message:'What type of template would You like to build?',
         choices:function(){
-          return fs.readdirSync('./.gulp/Tasks/Create/Templates').concat(['.core']);
+          return fs.readdirSync('./.gulp/Tasks/Create/Templates');
         }
       },
       action:function(v){

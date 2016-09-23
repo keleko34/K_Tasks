@@ -2,19 +2,19 @@
 var gulp = require('gulp'),
     inject = require('gulp-inject'),
     replace = require('gulp-replace'),
-    config = global.gulp.config;
+    config = global.gulp.config.Tasks.Build;
 
 module.exports = function(res,cb){
   console.log('\033[36mStarting Dev Build\033[37m');
 
   var _regexDefine = /(define)(.*)(function\()(.*)(\))(.*)(?:{)/,
       _regexDefineEnd = /}\)(?![\s\S]*}\))/m,
-      _file = './'+config.Build.src+'/' + res.Type + '/'+res.Name+'/'+res.Name+'.js',
+      _file = './'+config.src+'/' + res.Type + '/'+res.Name+'/'+res.Name+'.js',
       _vmFile = _file.replace('.js','.vm.js'),
       _bpFile = _file.replace('.js','.bp.js'),
       _temFile = _file.replace('.js','.html'),
       _cssHtml = _file.replace('.js','.css'),
-      _env = config.Tasks.Build.subtasks[res.SubTask];
+      _env = config.subtasks[res.SubTask];
 
   return gulp.src(_file)
     .pipe(inject(gulp.src(_vmFile),{
@@ -76,6 +76,6 @@ module.exports = function(res,cb){
     .pipe(replace(_regexDefineEnd,"}())"))
     .pipe(replace(_regexDefine,("\r\nvar Create"+res.Name+" = (function(){")))
     .pipe(replace(/^\s*[\r\n]/gm,''))
-    .pipe(gulp.dest('./'+config.Build.src+'/' + res.Type + '/'+res.Name+'/' + _env[res.currentrule]))
+    .pipe(gulp.dest('./'+config.src+'/' + res.Type + '/'+res.Name+'/' + _env[res.currentrule]))
     .on('end',cb);
 }

@@ -7,7 +7,7 @@
 var base = require('./../../Base'),
     insert = require('gulp-insert'),
     gulp = require('gulp'),
-    config = global.gulp.config;
+    config = global.gulp.config.Tasks.Docr;
 
 module.exports = function(){
 
@@ -18,7 +18,7 @@ module.exports = function(){
     if(res !== undefined && key === 'Element'){
       try
       {
-        var exists = fs.statSync('./'+config.Docr.src+'/' + res.Type + '/' + res.Element + '/Readme.md');
+        var exists = fs.statSync('./'+config.src+'/' + res.Type + '/' + res.Element + '/Readme.md');
         if(!exists || !exists.isFile()){
           console.error('\033[31mThere is no Readme in:\033[37m ',res.Type,' ',res.Element);
           process.exit(1);
@@ -47,7 +47,7 @@ module.exports = function(){
      all prompts are passed as res
   */
   function command(res){
-    var _readme = './'+config.Docr.src+'/'+res.Type+'/'+res.Element+'/Readme.md',
+    var _readme = './'+config.src+'/'+res.Type+'/'+res.Element+'/Readme.md',
         _strings = compileStrings(res.Filtered, res.Description, res.TypeCheck);
 
     return gulp.src(_readme)
@@ -106,7 +106,7 @@ module.exports = function(){
       }
       return contents;
     }))
-    .pipe(gulp.dest('./'+config.Docr.src+'/'+res.Type+'/'+res.Element))
+    .pipe(gulp.dest('./'+config.src+'/'+res.Type+'/'+res.Element))
     .on('end',function(){
       console.log('Finished Running Docr!');
     })

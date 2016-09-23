@@ -104,7 +104,7 @@ module.exports = (function(){
           setValue(commandName,options,res);
         }
         else{
-          console.log('\033[33mValue \033[37m',res,' \033[33mdoes not exist as a choice in the list\033[37m');
+          console.error('\033[33mValue \033[37m',res,' \033[33mdoes not exist as a choice in the list\033[37m');
         }
       }
     }

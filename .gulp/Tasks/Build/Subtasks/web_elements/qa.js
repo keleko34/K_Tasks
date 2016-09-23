@@ -6,49 +6,49 @@ var gulp = require('gulp'),
     replace = require('gulp-replace'),
     rename = require('gulp-rename'),
     cssmin = require('gulp-cssmin'),
-    config = global.gulp.config;
+    config = global.gulp.config.Tasks.Build;
 
 module.exports = function(res,cb){
     console.log('\033[36mStarting Qa Build\033[37m');
-    var _env = config.Tasks.Build.subtasks[res.SubTask],
-        _components = fs.readdirSync('./'+config.Build.src+'/Components/'),
+    var _env = config.subtasks[res.SubTask],
+        _components = fs.readdirSync('./'+config.src+'/Components/'),
         _componentsLow = _components.map(function(c){return c.toLowerCase();}),
-        _sections = fs.readdirSync('./'+config.Build.src+'/Sections/'),
+        _sections = fs.readdirSync('./'+config.src+'/Sections/'),
         _sectionsLow = _sections.map(function(c){return c.toLowerCase();}),
-        _file = './'+config.Build.src+'/' + res.Type + '/'+res.Name+'/'+_env[(res.currentrule-1)]+'/'+res.Name+'.js',
-        _htmlFile = './'+config.Build.src+'/' + res.Type + '/' + res.Name + '/' + res.Name + '.html',
-        _cssFile = './'+config.Build.src+'/' + res.Type + '/'+res.Name+'/' + res.Name + '.css',
+        _file = './'+config.src+'/' + res.Type + '/'+res.Name+'/'+_env[(res.currentrule-1)]+'/'+res.Name+'.js',
+        _htmlFile = './'+config.src+'/' + res.Type + '/' + res.Name + '/' + res.Name + '.html',
+        _cssFile = './'+config.src+'/' + res.Type + '/'+res.Name+'/' + res.Name + '.css',
         _currentRule = _env[res.currentrule];
 
     function minify(packed){
       return gulp.src(_cssFile)
       .pipe(cssmin())
       .pipe(rename({suffix: '.min'}))
-      .pipe(gulp.dest('./'+config.Build.src+'/' + res.Type + '/' + res.Name))
+      .pipe(gulp.dest('./'+config.src+'/' + res.Type + '/' + res.Name))
       .on('end',function(){
         console.log('\033[36mStarting compiler for:\033[37m',res.Name);
         if(!packed){
           gulp.src(_file)
           .pipe(replace(/(\/\*CSS Include \*\/)(.*?)(\/\* End Css Include \*\/)/,'\r\nvar css = "'+fs.readFileSync(_cssFile.replace('.css','.min.css'))+'";\r\n'))
-          .pipe(gulp.dest('./'+config.Build.src+'/' + res.Type + '/' + res.Name + '/'  + _currentRule))
+          .pipe(gulp.dest('./'+config.src+'/' + res.Type + '/' + res.Name + '/'  + _currentRule))
           .pipe(closureCompiler({
             compilerPath:"./compiler.jar",
             fileName:res.Name+".min.js",
             warning_level: 'QUIET'
           }))
-          .pipe(gulp.dest('./'+config.Build.src+'/' + res.Type + '/' + res.Name + '/'  + _currentRule))
+          .pipe(gulp.dest('./'+config.src+'/' + res.Type + '/' + res.Name + '/'  + _currentRule))
           .on('end',cb);
         }
         else{
-          gulp.src('./'+config.Build.src+'/' + res.Type + '/' + res.Name + '/'  + _currentRule+'/'+res.Name+'.js')
+          gulp.src('./'+config.src+'/' + res.Type + '/' + res.Name + '/'  + _currentRule+'/'+res.Name+'.js')
           .pipe(replace(/(\/\*CSS Include \*\/)(.*?)(\/\* End Css Include \*\/)/,'\r\nvar css = "'+fs.readFileSync(_cssFile.replace('.css','.min.css'))+'";\r\n'))
-          .pipe(gulp.dest('./'+config.Build.src+'/' + res.Type + '/' + res.Name + '/'  + _currentRule))
+          .pipe(gulp.dest('./'+config.src+'/' + res.Type + '/' + res.Name + '/'  + _currentRule))
           .pipe(closureCompiler({
             compilerPath:"./compiler.jar",
             fileName:res.Name+".min.js",
             warning_level: 'QUIET'
           }))
-          .pipe(gulp.dest('./'+config.Build.src+'/' + res.Type + '/' + res.Name + '/'  + _currentRule))
+          .pipe(gulp.dest('./'+config.src+'/' + res.Type + '/' + res.Name + '/'  + _currentRule))
           .on('end',cb);
         }
 
@@ -74,7 +74,7 @@ module.exports = function(res,cb){
         if(_componentsLow.indexOf(matched[x]) !== -1){
           try{
             var mod = _components[_componentsLow.indexOf(matched[x])];
-            var stats = fs.statSync('./'+config.Build.src+'/Components/'+mod+'/' + _currentRule + '/'+mod+'.js');
+            var stats = fs.statSync('./'+config.src+'/Components/'+mod+'/' + _currentRule + '/'+mod+'.js');
             if(stats && stats.isFile()){
               modules.push(mod);
             }
@@ -87,7 +87,7 @@ module.exports = function(res,cb){
 
       function pipeInject(mods){
         mods = mods.map(function(v){
-          return './'+config.Build.src+'/Components/'+v+'/' + _currentRule + '/'+v+'.js';
+          return './'+config.src+'/Components/'+v+'/' + _currentRule + '/'+v+'.js';
         });
          return gulp.src(_file).pipe(inject(gulp.src(mods),{
             relative:true,
@@ -100,7 +100,7 @@ module.exports = function(res,cb){
               return __contents;
             }
         }))
-        .pipe(gulp.dest('./'+config.Build.src+'/' + res.Type + '/' + res.Name + '/'  + _currentRule))
+        .pipe(gulp.dest('./'+config.src+'/' + res.Type + '/' + res.Name + '/'  + _currentRule))
         .on('end',function(){
             return minify(true);
          })
@@ -115,7 +115,7 @@ module.exports = function(res,cb){
         if(_componentsLow.indexOf(matched[x]) !== -1){
           try{
             var mod = _components[_componentsLow.indexOf(matched[x])];
-            var stats = fs.statSync('./'+config.Build.src+'/Components/'+mod+'/' + _currentRule + '/'+mod+'.js');
+            var stats = fs.statSync('./'+config.src+'/Components/'+mod+'/' + _currentRule + '/'+mod+'.js');
             if(stats && stats.isFile()){
               modules.push(mod);
             }
@@ -127,7 +127,7 @@ module.exports = function(res,cb){
         else if(_sectionsLow.indexOf(matched[x]) !== -1){
           try{
             var mod = _sections[_sectionsLow.indexOf(matched[x])];
-            var stats = fs.statSync('./'+config.Build.src+'/Sections/'+mod+'/' + _currentRule + '/'+mod+'.js');
+            var stats = fs.statSync('./'+config.src+'/Sections/'+mod+'/' + _currentRule + '/'+mod+'.js');
             if(stats && stats.isFile()){
               sections.push(mod);
             }
@@ -140,10 +140,10 @@ module.exports = function(res,cb){
 
       function pipeInject(mods,sects){
         mods = mods.map(function(v){
-          return './'+config.Build.src+'/Components/'+v+'/' + _currentRule + '/'+v+'.js';
+          return './'+config.src+'/Components/'+v+'/' + _currentRule + '/'+v+'.js';
         });
         sects =  sects.map(function(v){
-          return './'+config.Build.src+'/Sections/'+v+'/' + _currentRule + '/'+v+'.js';
+          return './'+config.src+'/Sections/'+v+'/' + _currentRule + '/'+v+'.js';
         });
 
         function injectComponents(){
@@ -158,7 +158,7 @@ module.exports = function(res,cb){
                 return __contents;
               }
           }))
-          .pipe(gulp.dest('./'+config.Build.src+'/' + res.Type + '/' + res.Name + '/'  + _currentRule))
+          .pipe(gulp.dest('./'+config.src+'/' + res.Type + '/' + res.Name + '/'  + _currentRule))
           .on('end',function(){
             if(sects.length > 0){
               return injectSections(false);
@@ -170,7 +170,7 @@ module.exports = function(res,cb){
         }
 
         function injectSections(isBase){
-          var src = (isBase ? _file : './'+config.Build.src+'/' + res.Type + '/' + res.Name + '/'  + _currentRule + '/'+res.Name+'.js');
+          var src = (isBase ? _file : './'+config.src+'/' + res.Type + '/' + res.Name + '/'  + _currentRule + '/'+res.Name+'.js');
           return gulp.src(src).pipe(inject(gulp.src(sects),{
               relative:true,
               starttag: '/* SECTION BUILD SECTION */',
@@ -182,7 +182,7 @@ module.exports = function(res,cb){
                 return __contents;
               }
           }))
-          .pipe(gulp.dest('./'+config.Build.src+'/' + res.Type + '/' + res.Name + '/'  + _currentRule))
+          .pipe(gulp.dest('./'+config.src+'/' + res.Type + '/' + res.Name + '/'  + _currentRule))
           .on('end',function(){
               return minify(true);
            })
