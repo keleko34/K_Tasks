@@ -24,8 +24,8 @@
     "url": "https://github.com/keleko34/K_Tasks"
   },
   "scripts": {
-    "installer": "npm i git+https://github.com/keleko34/gulp.git -g && npm i",
-    "i": "npm i git+https://github.com/keleko34/gulp.git -g && npm i",
+    "installer": "npm i git+https://github.com/keleko34/gulp.git -g && npm i && bower i",
+    "i": "npm i git+https://github.com/keleko34/gulp.git -g && npm i && bower i",
     "task": "node_modules\\.bin\\gulp task --silent",
     "bower": "node_modules\\.bin\\gulp bower --silent",
     "create": "node_modules\\.bin\\gulp create --silent",
@@ -34,20 +34,15 @@
   },
   "devDependencies": {
     "commander": "^2.9.0",
-    "gulp": "^3.9.0",
-    "gulp-bower": "0.0.13",
+    "gulp": "^3.9.1",
     "gulp-closure-compiler": "^0.4.0",
-    "gulp-connect": "^4.1.0",
-    "gulp-cssmin": "^0.1.7",
+    "gulp-connect": "^5.0.0",
     "gulp-file": "^0.2.0",
     "gulp-inject": "^3.0.0",
-    "gulp-insert": "^0.5.0",
+    "gulp-modify": "^0.1.1",
     "gulp-prompt": "^0.1.2",
-    "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
-    "gulp-search": "^1.0.0",
-    "gulp-util": "^3.0.7",
-    "js-beautify": "^1.6.3"
+    "js-beautify": "^1.6.4"
   },
   "dependencies": {}
 }

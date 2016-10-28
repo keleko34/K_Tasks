@@ -1,10 +1,17 @@
 module.exports = {
   Tasks: {
-    Docr: require('./Tasks/Docr'),
+    Default: require('./Tasks/Default'),
     Server: require('./Tasks/Server'),
-    Bower: require('./Tasks/Bower'),
+    Test: require('./Tasks/Test'),
     Task: require('./Tasks/Task'),
-    Create: require('./Tasks/Create'),
+    Watch: require('./Tasks/Watch'),
     Build: require('./Tasks/Build')
-  }
+  },
+  ignore:[
+        "test",
+        "bower_components",
+        "node_modules",
+        ".gulp",
+        ".git"
+    ]
 }

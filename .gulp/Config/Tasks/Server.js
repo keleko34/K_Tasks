@@ -9,17 +9,6 @@ module.exports = {
         type: "input",
         message: "Please enter a port for the server to use"
       },
-      action:'Reload'
-    },
-    Reload: {
-      cmd: {
-        short: "-r",
-        long: "--reload"
-      },
-      prompt: {
-        type: "confirm",
-        message: "Would You like to turn on livereload?"
-      },
       action:'Root'
     },
     Root: {
