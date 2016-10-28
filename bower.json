@@ -1,7 +1,7 @@
 {
   "name": "K_Tasks",
   "description": "Default gulp Tasks",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "main": "index",
   "authors": [
     "Keleko34"
