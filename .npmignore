@@ -4,6 +4,4 @@ support
 test
 examples
 *.sock
-Build
-!Tasks/Build
 Min
