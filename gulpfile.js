@@ -7,8 +7,6 @@ module.exports = function(){
   global.gulp.local = global.gulp.base+"/.gulp";
   global.gulp.global = __dirname+"/.gulp";
   global.gulp.config = require(__dirname+'/.gulp/Config/Config.js');
-
-console.log(Object.keys(global.gulp.config));
   /* local gulps */
 
   /* Gulp Task Modules
