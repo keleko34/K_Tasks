@@ -21,21 +21,21 @@ module.exports = {
     Build: {
       cmd: {
         short: '-b',
-        long: '--build'
+        long: '--builds'
       },
       prompt: {
         type:"list",
         message: "Please choose a build library to use",
         choices: function(){
-          return global.gulp.config.Tasks.Build.builds;
+          return Object.keys(global.gulp.config.Tasks.Build.builds);
         }
       },
       action:'end'
     }
   },
-  builds:fs.readdirSync(_dirname+"/../Builds")
+  builds:fs.readdirSync(global.gulp.global+"/Builds")
   .map(function(build){
-    return {name:build.replace('.js','').toLowerCase(),lib:require(_dirname+"/../Builds/"+build)};
+    return {name:build.replace('.js',''),lib:require(global.gulp.global+"/Builds/"+build)};
   })
   .concat((function(){
     var localBuilds = [];

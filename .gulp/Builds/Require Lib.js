@@ -1,5 +1,4 @@
-var base = require('./../../Base')
-  , gulp = require('gulp')
+var gulp = require('gulp')
   , modify = require('gulp-modify')
   , inject = require('gulp-inject')
   , replace = require('gulp-replace')
