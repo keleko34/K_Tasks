@@ -1,6 +1,6 @@
 {
   "name": "K_Tasks",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "Gulp tasks for quick tasks",
   "keywords": [
     "tasks",
@@ -11,7 +11,7 @@
     "url": "https://github.com/keleko34/K_Tasks",
     "email": "Gregory.Guidero@Gmail.com"
   },
-  "main":"init.js",
+  "main": "init.js",
   "license": "(MIT OR Apache-2.0)",
   "contributors": [
     {
