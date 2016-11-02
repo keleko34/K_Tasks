@@ -31,7 +31,6 @@ console.log(Object.keys(global.gulp.config));
     console.error(e);
     return;
   }
-  console.log(Object.keys(global.gulp.tasks));
 
   /* local gulp */
   try{
@@ -67,8 +66,6 @@ console.log(Object.keys(global.gulp.config));
     console.error(e);
     return;
   }
-
-  console.log(Object.keys(global.gulp.tasks));
 
   Object.keys(global.gulp.tasks).forEach(function(task){
     if(global.gulp.config.Tasks[task] !== undefined){
