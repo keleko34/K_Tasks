@@ -236,6 +236,7 @@ module.exports = function()
                 gulp.src(global.gulp.base+'/'+res.Component+'/Build/'+res.Component+'.js')
                 .pipe(modify({
                     fileModifier: function(file,contents){
+                        contents = "(function(){\r\n"+contents+"\r\n if(define && require){define([],function(){ return Create"+res.Component+";});}else if(module){module.exports = Create"+res.Component+";} \r\nreturn Create"+res.Component+";\r\n}())";
                         return beautify(contents);
                     }
                 }))
