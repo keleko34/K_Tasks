@@ -11,6 +11,7 @@
     "url": "https://github.com/keleko34/K_Tasks",
     "email": "Gregory.Guidero@Gmail.com"
   },
+  "main":"init.js",
   "license": "(MIT OR Apache-2.0)",
   "contributors": [
     {

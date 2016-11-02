@@ -4,7 +4,7 @@ module.exports = function()
 {
     function Command(res)
     {
-        require(global.gulp.path+"/Tasks/"+res.Task+"/"+res.Task)();
+        global.gulp.tasks[res.Task]();
     }
 
     return base
