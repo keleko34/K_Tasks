@@ -4,6 +4,5 @@ support
 test
 examples
 *.sock
-.gulp
 Build
 Min
