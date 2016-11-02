@@ -1,8 +1,8 @@
 var fs = require('fs');
 
 module.exports = {
-  Tasks: fs.readdirSync(__dirname+"/Tasks").map(function(folder){
-    return require(__dirname+'/Tasks/'+folder+'/'+folder);
+  Tasks: fs.readdirSync(__dirname+"/Config/Tasks").map(function(file){
+    return require(__dirname+'/Config/Tasks/'+file);
   }),
   ignore:[
         "test",
