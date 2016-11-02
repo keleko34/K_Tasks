@@ -8,6 +8,7 @@ module.exports = function(){
   global.gulp.global = __dirname+"/.gulp";
   global.gulp.config = require(__dirname+'/.gulp/Config/Config.js');
 
+console.log(Object.keys(global.gulp.config));
   /* local gulps */
 
   /* Gulp Task Modules
@@ -30,7 +31,7 @@ module.exports = function(){
     console.error(e);
     return;
   }
-
+  console.log(Object.keys(global.gulp.tasks));
 
   /* local gulp */
   try{
@@ -67,9 +68,11 @@ module.exports = function(){
     return;
   }
 
+  console.log(Object.keys(global.gulp.tasks));
+
   Object.keys(global.gulp.tasks).forEach(function(task){
     if(global.gulp.config.Tasks[task] !== undefined){
-      gulp.task(task,global.gulp.tasks[task]);
+      gulp.task(task.toLowerCase(),global.gulp.tasks[task]);
     }
     else{
       console.error('\033[31You are missing a config file in .gulp/Config/'+task+'/'+task+'.js for task:  \033[37m '+task);

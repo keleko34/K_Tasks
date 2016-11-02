@@ -1,9 +1,10 @@
 var fs = require('fs');
 
 module.exports = {
-  Tasks: fs.readdirSync(__dirname+"/Config/Tasks").map(function(file){
-    return require(__dirname+'/Config/Tasks/'+file);
-  }),
+  Tasks: fs.readdirSync(__dirname+"/Tasks").reduce(function(Obj,file){
+	  Obj[file.replace('.js','')] = require(__dirname+'/Tasks/'+file);
+    return Obj;
+  },{}),
   ignore:[
         "test",
         "bower_components",
