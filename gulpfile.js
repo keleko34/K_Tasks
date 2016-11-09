@@ -32,11 +32,11 @@ module.exports = function(){
 
   /* local gulp */
   try{
-    var hasLocalConfig = fs.statSync(global.gulp.base+"/.gulp/Config"),
-        hasLocalTasks = fs.statSync(global.gulp.base+"/.gulp/Tasks");
+    var hasLocalConfig = fs.statSync(global.gulp.local+"/Config"),
+        hasLocalTasks = fs.statSync(global.gulp.local+"/Tasks");
 
     if(hasLocalConfig && hasLocalConfig.isDirectory()){
-      var localConfigs = require(global.gulp.base+"/.gulp/Config/Config.js");
+      var localConfigs = require(global.gulp.local+"/Config/Config.js");
       if(localConfigs.Tasks !== undefined)
       {
         Object.keys(localConfigs.Tasks).forEach(function(taskConfig){
