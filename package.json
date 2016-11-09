@@ -32,7 +32,7 @@
     "create": "node_modules\\.bin\\gulp create --silent",
     "build": "node_modules\\.bin\\gulp build --silent",
     "server": "node_modules\\.bin\\gulp server --silent",
-    "postinstall": "npm list -g gulp || npm i git+https://github.com/keleko34/gulp.git -g"
+    "postinstall": "npm i && npm list -g gulp || npm i git+https://github.com/keleko34/gulp.git -g"
   },
   "dependencies": {
     "commander": "^2.9.0",
