@@ -21,12 +21,14 @@ module.exports = function(){
       Obj[folder] = require(__dirname+"/.gulp/Tasks/"+folder+"/"+folder);
       return Obj;
     },{});
-  }
-  catch(e){
-    if(e.code !== 'ENOENT'){
+  }catch(e){
+    if(e.code === 'ENOENT'){
       console.error('\033[31You do not have a Tasks folder in k_tasks .gulp, Please submit bug report \033[37m');
     }
-    console.error(e);
+    else
+    {
+      console.error(e);
+    }
     return;
   }
 
@@ -56,13 +58,10 @@ module.exports = function(){
         global.gulp.tasks[folder] = require(global.gulp.base+"/.gulp/Tasks/"+folder+"/"+folder);
       });
     }
-  }
-  catch(e){
+  }catch(e){
     if(e.code !== 'ENOENT'){
-      console.error('\033[31You do not have a Tasks folder in local .gulp, Please submit bug report \033[37m');
+      console.error(e);
     }
-    console.error(e);
-    return;
   }
 
   Object.keys(global.gulp.tasks).forEach(function(task){
@@ -70,7 +69,7 @@ module.exports = function(){
       gulp.task(task.toLowerCase(),global.gulp.tasks[task]);
     }
     else{
-      console.error('\033[31You are missing a config file in .gulp/Config/'+task+'/'+task+'.js for task:  \033[37m '+task);
+      console.log('\033[31You are missing a config file in .gulp/Config/'+task+'/'+task+'.js for task:  \033[37m '+task);
     }
   });
 }
