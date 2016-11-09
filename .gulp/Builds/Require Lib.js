@@ -201,7 +201,14 @@ module.exports = function(res)
                 }
             };
 
-        if(masterSubs.length !== 0) injectModule();
+        if(masterSubs.length !== 0)
+        {
+          injectModule();
+        }
+        else
+        {
+          cb();
+        }
     }
 
     function Command(res)
