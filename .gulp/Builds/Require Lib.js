@@ -201,7 +201,7 @@ module.exports = function(res)
                 }
             };
 
-        injectModule();
+        if(masterSubs.length !== 0) injectModule();
     }
 
     function Command(res)
