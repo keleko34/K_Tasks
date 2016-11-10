@@ -217,22 +217,24 @@ module.exports = function(res)
 
         return build(global.gulp.base+'/'+res.Component+'/Build',global.gulp.base+'/'+res.Component+'/'+res.Component+'.js',function(glp){
             injector(global.gulp.base+'/'+res.Component+'/Build/'+res.Component+'.js',function(){
-                console.log('\033[36mRunning clojure compiler minification\033[37m');
-
-                gulp.src(global.gulp.base+'/'+res.Component+'/Build/'+res.Component+'.js')
-                .pipe(modify({
-                    fileModifier: function(file,contents){
-                        contents = "(function(){\r\n"+contents+"\r\n if(define && require){define([],function(){ return Create"+res.Component+";});}else if(module){module.exports = Create"+res.Component+";} \r\nreturn Create"+res.Component+";\r\n}())";
-                        return beautify(contents);
-                    }
-                }))
-                .pipe(replace(/^\s*[\r\n]/gm,""))
-                .pipe(gulp.dest('./'+res.Component+'/Build'))
-                .pipe(closureCompiler({
-                    compilerPath:"./compiler.jar",
-                    fileName:res.Component+".min.js"
-                }))
-                .pipe(gulp.dest('./'+res.Component+'/Min'));
+                setTimeout(function(){
+                  console.log('\033[36mRunning clojure compiler minification\033[37m');
+                  
+                  gulp.src(global.gulp.base+'/'+res.Component+'/Build/'+res.Component+'.js')
+                  .pipe(modify({
+                      fileModifier: function(file,contents){
+                          contents = "(function(){\r\n"+contents+"\r\n if(define && require){define([],function(){ return Create"+res.Component+";});}else if(module){module.exports = Create"+res.Component+";} \r\nreturn Create"+res.Component+";\r\n}())";
+                          return beautify(contents);
+                      }
+                  }))
+                  .pipe(replace(/^\s*[\r\n]/gm,""))
+                  .pipe(gulp.dest('./'+res.Component+'/Build'))
+                  .pipe(closureCompiler({
+                      compilerPath:"./compiler.jar",
+                      fileName:res.Component+".min.js"
+                  }))
+                  .pipe(gulp.dest('./'+res.Component+'/Min'));
+                },0);
             });
         });
     }
