@@ -16,7 +16,7 @@ module.exports = function()
     {
         var url = req.url.substring(1,req.url.length);
         if(req.url.substring(0,(req.url.indexOf('?') !== -1 ? req.url.indexOf('?') : req.url.length)) === '/'){
-            req.url = '/test/index.html';
+            req.url = '/index.html';
         }
         else if(req.url.indexOf('/') === 0 && req.url.substring(1,req.url.length).indexOf('/') === -1)
         {
