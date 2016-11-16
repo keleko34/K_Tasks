@@ -86,7 +86,7 @@ module.exports = function()
     function Command(res)
     {
         connect.server({
-        root: (res.root && res.root.length !== 0 ? res.root : '.'),
+        root: (res.Root && res.Root.length !== 0 ? res.Root : '.'),
         livereload: false,
         port:(res.port && res.port.length !== 0 ? parseInt(res.port) : 8080),
         middleware:function(connect, opt){
