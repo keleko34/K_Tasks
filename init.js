@@ -1,1 +1,1 @@
-module.exports = require('./gulpfile');
+module.exports = require('./gulpinit');

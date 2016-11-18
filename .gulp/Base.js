@@ -160,13 +160,12 @@ module.exports = (function(){
       }
     });
 
-    process.argv = process.argv.filter(function(inp){
-      return (Object.keys(global.gulp.tasks).map(function(task){return task.toLowerCase()}).indexOf(inp) === -1);
-    })
+    process.argv = process.argv.filter(function(inp,i){
+      return (i !== 2);//(Object.keys(global.gulp.tasks).map(function(task){return task.toLowerCase()}).indexOf(inp) === -1);
+    });
 
     /* add helper for options method after reading all cli commands */
     cli.option('-o, --options','Displays helper for options',cli.help.bind(cli)).parse(process.argv);
-
     /* run first command in the list */
     toCommand(_currentTaskCommand,_currentTaskCommand);
 

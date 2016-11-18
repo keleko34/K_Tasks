@@ -85,6 +85,7 @@ module.exports = function()
 
     function Command(res)
     {
+        console.log("res", res);
         connect.server({
         root: (res.Root && res.Root.length !== 0 ? res.Root : '.'),
         livereload: false,
