@@ -2,7 +2,7 @@ var fs = require('fs')
 
 module.exports = {
   commands:{
-    Component: {
+    /*Component: {
       cmd: {
         short: "-c",
         long: "--component"
@@ -17,7 +17,7 @@ module.exports = {
         }
       },
       action:'Test'
-    },
+    },*/
     Test: {
       cmd: {
         short: '-t',
@@ -52,5 +52,7 @@ module.exports = {
   .reduce(function(Obj,test){
     Obj[test.name] = test.lib;
     return Obj;
-  },{})
+  },{}),
+  port:8080,
+  root:'test'
 }
