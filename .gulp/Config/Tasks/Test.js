@@ -40,14 +40,14 @@ module.exports = {
   .concat((function(){
     var localTests = [];
     try{
-      localBuilds = fs.readdirSync(global.gulp.local+"/Tests").map(function(test){
+      localTests = fs.readdirSync(global.gulp.local+"/Tests").map(function(test){
         return {name:test.replace('.js','').toLowerCase(),lib:require(global.gulp.local+"/Tests/"+test)};
       });
     }
     catch(e){
 
     }
-    return localBuilds;
+    return localTests;
   }()))
   .reduce(function(Obj,test){
     Obj[test.name] = test.lib;
