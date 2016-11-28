@@ -180,7 +180,7 @@ module.exports = function(res)
                     endtag: '/* End Build */',
                     transform: function(filepath,file,i,length){
                         var contents = file.contents.toString('utf8');
-                        if((counter+1) !== masterSubs.length) contents += '\r\n/* Build */\r\n/* END BUILD */';
+                        if(contents.indexOf('/* Build */') === -1 && (counter+1) !== masterSubs.length) contents += '\r\n/* Build */\r\n/* END BUILD */';
                         console.log('\033[36mInjecting File:\033[37m',name);
                         return contents;
                     }
