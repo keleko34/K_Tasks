@@ -53,6 +53,6 @@ module.exports = {
     Obj[test.name] = test.lib;
     return Obj;
   },{}),
-  port:8080,
+  port:1824,
   root:'test'
 }
