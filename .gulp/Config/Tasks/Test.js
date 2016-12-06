@@ -25,9 +25,28 @@ module.exports = {
       },
       prompt: {
         type:"list",
-        message: "Please choose a test to to run",
+        message: "Please choose a test to run",
         choices: function(){
           return Object.keys(global.gulp.config.Tasks.Test.tests);
+        }
+      },
+      action:function(v)
+      {
+        if(v === 'FrontEndWebLibrary') return 'FrontEnd';
+
+        return 'end';
+      }
+    },
+    FrontEnd: {
+      cmd: {
+        short: '-f',
+        long: '--front'
+      },
+      prompt: {
+        type:"list",
+        message: "Please choose a front end test to run",
+        choices: function(){
+          return Object.keys(global.gulp.config.Tasks.Test.FrontEndTests);
         }
       },
       action:'end'
@@ -42,6 +61,26 @@ module.exports = {
     try{
       localTests = fs.readdirSync(global.gulp.local+"/Tests").map(function(test){
         return {name:test.replace('.js','').toLowerCase(),lib:require(global.gulp.local+"/Tests/"+test)};
+      });
+    }
+    catch(e){
+
+    }
+    return localTests;
+  }()))
+  .reduce(function(Obj,test){
+    Obj[test.name] = test.lib;
+    return Obj;
+  },{}),
+  FrontEndTests:fs.readdirSync(global.gulp.node_module+"/test/tests")
+  .map(function(test){
+    return {name:test.replace('.js',''),lib:require(global.gulp.global+"/test/tests/"+test)};
+  })
+  .concat((function(){
+    var localTests = [];
+    try{
+      localTests = fs.readdirSync(global.gulp.base+"/test/tests").map(function(test){
+        return {name:test.replace('.js','').toLowerCase(),lib:require(global.gulp.base+"/test/tests/"+test)};
       });
     }
     catch(e){

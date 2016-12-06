@@ -5,6 +5,7 @@ module.exports = function(){
   global.gulp = {};
   global.gulp.base = process.cwd().replace(/\\/g,"/");
   global.gulp.local = global.gulp.base+"/.gulp";
+  global.gulp.node_module = __dirname;
   global.gulp.global = __dirname+"/.gulp";
   global.gulp.config = require(__dirname+'/.gulp/Config/Config.js');
   /* local gulps */
