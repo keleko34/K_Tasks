@@ -72,15 +72,15 @@ module.exports = {
     Obj[test.name] = test.lib;
     return Obj;
   },{}),
-  FrontEndTests:fs.readdirSync(global.gulp.node_module+"/test/tests")
+  FrontEndTests:fs.readdirSync(global.gulp.global+"/tests")
   .map(function(test){
-    return {name:test.replace('.js',''),lib:require(global.gulp.global+"/test/tests/"+test)};
+    return {name:test.replace('.js',''),lib:require(global.gulp.global+"/tests/"+test)};
   })
   .concat((function(){
     var localTests = [];
     try{
-      localTests = fs.readdirSync(global.gulp.base+"/test/tests").map(function(test){
-        return {name:test.replace('.js','').toLowerCase(),lib:require(global.gulp.base+"/test/tests/"+test)};
+      localTests = fs.readdirSync(global.gulp.base+"/.gulp/tests").map(function(test){
+        return {name:test.replace('.js','').toLowerCase(),lib:require(global.gulp.base+"/.gulp/tests/"+test)};
       });
     }
     catch(e){
