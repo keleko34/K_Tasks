@@ -223,7 +223,7 @@ module.exports = function(res)
                   gulp.src(global.gulp.base+'/'+res.Component+'/Build/'+res.Component+'.js')
                   .pipe(modify({
                       fileModifier: function(file,contents){
-                          contents = "var "+res.Component+" = (function(){\r\n"+contents+"\r\n if(window && window.define && window.require){define([],function(){ return Create"+res.Component+";});}else if((window && window.module) || module){module.exports = Create"+res.Component+";} \r\nreturn Create"+res.Component+";\r\n}())";
+                          contents = "var "+res.Component+" = (function(){\r\n"+contents+"\r\n if(window && window.define && window.require){define([],function(){ return Create"+res.Component+";});}else if((typeof module !== undefined)){module.exports = Create"+res.Component+";} \r\nreturn Create"+res.Component+";\r\n}())";
                           return beautify(contents);
                       }
                   }))
