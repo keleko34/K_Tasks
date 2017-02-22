@@ -61,8 +61,30 @@ module.exports = function()
 
                 }
             }
+          
+            function tryLocal(url)
+            {
+              try
+              {
+                  var fstat = fs.statSync(settings.base+'/'+url);
+                  if(fstat.isDirectory())
+                  {
+                      req.url = "/"+url+"/"+url+".js";
+                      fs.createReadStream(settings.base+"/"+url+"/"+url+'.js').pipe(res);
+                      res.close();
+                  }
+                  else
+                  {
+                      tryBower(url);
+                  }
+              }
+              catch(e)
+              {
+                  tryBower(url);
+              }
+            }
 
-            tryBower((req.url.indexOf('.') !== -1 ? req.url.substring(1,req.url.indexOf('.')) : req.url.substring(1,req.url.length)));
+            tryLocal((req.url.indexOf('.') !== -1 ? req.url.substring(1,req.url.indexOf('.')) : req.url.substring(1,req.url.length)));
         }
         else
         {
