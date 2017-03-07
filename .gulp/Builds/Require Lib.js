@@ -211,16 +211,19 @@ module.exports = function(res)
         }
     }
 
-    function Command(res)
+    function Command(res,local,package)
     {
         console.log('\033[36mStarting to compile module:\033[37m',res.Component);
-
-        return build(global.gulp.base+'/'+res.Component+'/Build',global.gulp.base+'/'+res.Component+'/'+res.Component+'.js',function(glp){
-            injector(global.gulp.base+'/'+res.Component+'/Build/'+res.Component+'.js',function(){
+          
+        var buildFile = (local ? '/'+res.Component+'/'+res.Component+'.js' : ('/'+res.Component+'/'+res.Component+'/'+res.Component+'.js')),
+            buildLocation = (local ? '/'+res.Component+'/Build' : ('/'+res.Component+'/'+res.Component+'/Build'))
+      
+        return build(global.gulp.base+buildLocation,global.gulp.base+buildFile,function(glp){
+            injector(global.gulp.base+buildLocation+'/'+res.Component+'.js',function(){
                 setTimeout(function(){
                   console.log('\033[36mRunning clojure compiler minification\033[37m');
                   
-                  gulp.src(global.gulp.base+'/'+res.Component+'/Build/'+res.Component+'.js')
+                  gulp.src(global.gulp.base+buildLocation+'/'+res.Component+'.js')
                   .pipe(modify({
                       fileModifier: function(file,contents){
                           contents = "var "+res.Component+" = (function(){\r\n"+contents+"\r\n if((typeof window !== 'undefined') && (typeof window.define !== 'undefined') && (typeof window.require !== 'undefined')){define([],function(){ return Create"+res.Component+";});}else if((typeof module !== 'undefined')){module.exports = Create"+res.Component+";} \r\nreturn Create"+res.Component+";\r\n}())";
@@ -228,12 +231,15 @@ module.exports = function(res)
                       }
                   }))
                   .pipe(replace(/^\s*[\r\n]/gm,""))
-                  .pipe(gulp.dest('./'+res.Component+'/Build'))
-                  .pipe(closureCompiler({
+                  .pipe(gulp.dest('./'+(local ? res.Component : (res.Component + '/' + res.Component))+'/Build'))
+                  .on('end',function(){
+                    gulp.src('./'+(local ? res.Component : (res.Component + '/' + res.Component))+'/Build/'+res.Component+'.js')
+                    .pipe(closureCompiler({
                       compilerPath:"./compiler.jar",
                       fileName:res.Component+".min.js"
-                  }))
-                  .pipe(gulp.dest('./'+res.Component+'/Min'));
+                    }))
+                    .pipe(gulp.dest('./'+(local ? res.Component : (res.Component + '/' + res.Component))+'/Min'));
+                  });
                 },0);
             });
         });
@@ -242,13 +248,15 @@ module.exports = function(res)
      if(res.Component !== undefined){
         try
         {
-            var exists = fs.statSync('./'+res.Component+'/'+res.Component+'.js');
-            if(!exists){
+            var exists = fs.statSync('./'+res.Component+'/'+res.Component+'.js'),
+                existsPackage = fs.statSync('./'+res.Component+'/package.json'),
+                existsBelow = (existsPackage ? fs.statSync('./'+res.Component+'/'+res.Component+'/'+res.Component+'.js')  : false);
+            if(!exists && !existsBelow){
                 console.error('\033[31mYour missing a main js file by the same name:\033[37m ',res.Component);
                 process.exit(1);
             }
             else{
-                Command(res);
+                Command(res,exists,existsBelow);
             }
         }
         catch(e)
