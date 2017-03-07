@@ -1,3 +1,5 @@
+var fs = require('fs');
+
 module.exports = {
   commands: {
     Port: {
@@ -22,5 +24,19 @@ module.exports = {
       },
       action:'end'
     }
-  }
+  },
+  routes:(function(){
+      var localRoutes = [];
+      try{
+        localRoutes = fs.readdirSync(global.gulp.local+"/Routes")
+        .map(function(route){
+          return require(global.gulp.local+"/Routes/"+route);
+        });
+      }
+      catch(e){}
+      return localRoutes;
+    }()).concat(fs.readdirSync(global.gulp.global+"/Routes")
+    .map(function(route){
+      return require(global.gulp.global+"/Routes/"+route);
+    }))
 }

@@ -13,103 +13,6 @@ var settings = global.gulp,
 
 module.exports = function()
 {
-    function route(req,res,next)
-    {
-        var url = req.url.substring(1,req.url.length);
-        if(req.url.substring(0,(req.url.indexOf('?') !== -1 ? req.url.indexOf('?') : req.url.length)) === '/'){
-            req.url = '/index.html';
-        }
-        else if(req.url.indexOf('/') === 0 && req.url.substring(1,req.url.length).indexOf('/') === -1)
-        {
-            function tryBower(url)
-            {
-                try
-                {
-                    var fstat = fs.statSync(settings.base+'/bower_components/'+url);
-                    if(fstat.isDirectory())
-                    {
-                        var main = JSON.parse(fs.readFileSync(settings.base+"/bower_components/"+url+"/bower.json")).main;
-                        req.url = "/bower_components/"+url+"/"+main;
-                        fs.createReadStream(settings.base+"/bower_components/"+url+"/"+main).pipe(res);
-						res.close();
-                    }
-                    else
-                    {
-                        tryNode(url);
-                    }
-                }
-                catch(e)
-                {
-                    tryNode(url);
-                }
-            }
-
-            function tryNode(url)
-            {
-                try
-                {
-                    var fstat = fs.statSync(settings.base+'/node_modules/'+url);
-                    if(fstat.isDirectory())
-                    {
-                        req.url = "/node_modules/"+url+"/"+url+"/"+url+".js";
-                        fs.createReadStream(settings.base+"/node_modules/"+url+"/"+url+"/"+url+".js").pipe(res);
-						res.close();
-                    }
-                }
-                catch(e)
-                {
-
-                }
-            }
-          
-            function tryLocal(url)
-            {
-              try
-              {
-                  var fstat = fs.statSync(settings.base+'/'+url);
-                  if(fstat.isDirectory())
-                  {
-                      req.url = "/"+url+"/"+url+".js";
-                      fs.createReadStream(settings.base+"/"+url+"/"+url+'.js').pipe(res);
-                      res.close();
-                  }
-                  else
-                  {
-                      tryBower(url);
-                  }
-              }
-              catch(e)
-              {
-                  tryBower(url);
-              }
-            }
-
-            tryLocal((req.url.indexOf('.') !== -1 ? req.url.substring(1,req.url.indexOf('.')) : req.url.substring(1,req.url.length)));
-        }
-        else
-        {
-            for(var x=0,len=builds.length;x<len;x++)
-            {
-                if(req.url.indexOf(builds[x]))
-                {
-                    var q = query.parse(req.url.substring((req.url.indexOf('?')+1),req.url.length));
-                    if(q.env)
-                    {
-                        if(q.env.toLowerCase() === 'build')
-                        {
-                            req.url = '/'+builds[x]+'/Build/'+builds[x]+'.js';
-                        }
-                        else if(q.env.toLowerCase() === 'min')
-                        {
-                            req.url = '/'+builds[x]+'/Min/'+builds[x]+'.min.js';
-                        }
-                    }
-                }
-            }
-        }
-        return next();
-    }
-
     function Command(res)
     {
         console.info("\033[36mPress ctrl + o to quickly open the default web page in your default browser\033[37m");
@@ -118,7 +21,7 @@ module.exports = function()
             livereload: false,
             port:(res.Port && res.Port.length !== 0 ? parseInt(res.Port) : 8080),
             middleware:function(connect, opt){
-                return [route]
+                return global.gulp.config.Tasks.Server.routes;
             }
         });
 
