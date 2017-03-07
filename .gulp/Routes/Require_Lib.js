@@ -1,7 +1,6 @@
 var query = require('querystring')
   , fs = require('fs');
 
-console.log(global.gulp);
 var settings = global.gulp,
     builds = fs.readdirSync(settings.base).filter(function(file){
         return (fs.statSync(settings.base+"/"+file).isDirectory() &&   ["test","bower_components","node_modules",".gulp",".git"].indexOf(file) === -1);
