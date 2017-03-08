@@ -246,25 +246,37 @@ module.exports = function(res)
     }
 
      if(res.Component !== undefined){
-        try
-        {
-            var exists = fs.statSync('./'+res.Component+'/'+res.Component+'.js'),
-                existsPackage = fs.statSync('./'+res.Component+'/package.json'),
-                existsBelow = (existsPackage ? fs.statSync('./'+res.Component+'/'+res.Component+'/'+res.Component+'.js')  : false);
-            if(!exists && !existsBelow){
-                console.error('\033[31mYour missing a main js file by the same name:\033[37m ',res.Component);
-                process.exit(1);
-            }
-            else{
-                Command(res,exists,existsBelow);
-            }
-        }
-        catch(e)
-        {
-            if(e.code !== 'ENOENT'){
-                console.error(e);
-                process.exit(1);
-            }
-        }
+        fs.stat('./'+res.Component+'/'+res.Component+'.js',function(e){
+          if(!e)
+          {
+              gutil.log("Building local");
+              Command(res,true,false);
+          }
+          else
+          {
+              fs.stat('./'+res.Component+'/package.json',function(e){
+                  if(!e)
+                  {
+                      fs.stat('./'+res.Component+'/'+res.Component+'/'+res.Component+'.js',function(e){
+                          if(!e)
+                          {
+                              gutil.log("Building package");
+                              Command(res,false,true);
+                          }
+                          else
+                          {
+                              console.error('\033[31mYour missing a main js file by the same name:\033[37m ',res.Component);
+                              process.exit(1);
+                          }
+                      })
+                  }
+                  else
+                  {
+                      console.error('\033[31mYour missing a main js file by the same name:\033[37m ',res.Component);
+                      process.exit(1);
+                  }
+              });
+          }
+      });
     }
 }
