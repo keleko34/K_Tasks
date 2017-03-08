@@ -62,9 +62,27 @@ module.exports = function(req,res,next)
             var fstat = fs.statSync(settings.base+'/'+url);
             if(fstat.isDirectory())
             {
-                req.url = "/"+url+"/"+url+".js";
-                fs.createReadStream(settings.base+"/"+url+"/"+url+'.js').pipe(res);
-                res.close();
+                fs.stat(settings.base+'/'+url+'/'+url,function(err,stat){
+                  if(!err)
+                  {
+                    if(stat.isDirectory())
+                    {
+                      req.url = "/"+url+"/"+url+"/"+url+".js";
+                      fs.createReadStream(settings.base+"/"+url+"/"+url+"/"+url+'.js').pipe(res);
+                      res.close();
+                    }
+                    else
+                    {
+                      req.url = "/"+url+"/"+url+".js";
+                      fs.createReadStream(settings.base+"/"+url+"/"+url+'.js').pipe(res);
+                      res.close();
+                    }
+                  }
+                  else
+                  {
+                    tryBower(url);
+                  }
+                });
             }
             else
             {
