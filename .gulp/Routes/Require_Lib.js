@@ -62,8 +62,8 @@ module.exports = function(req,res,next)
             var fstat = fs.statSync(settings.base+'/'+url+'/'+url+'/'+url+'.js');
             if(fstat.isFile())
             {
-                req.url = "/node_modules/"+url+"/"+url+"/"+url+".js";
-                fs.createReadStream(settings.base+"/node_modules/"+url+"/"+url+"/"+url+".js").pipe(res);
+                req.url = "/"+url+"/"+url+"/"+url+".js";
+                fs.createReadStream(settings.base+"/"+url+"/"+url+"/"+url+".js").pipe(res);
                 res.close();
             }
             else
