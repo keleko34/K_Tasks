@@ -55,34 +55,16 @@ module.exports = function(req,res,next)
           }
       }
 
-      function tryLocal(url)
+      function tryPackage(url)
       {
         try
         {
-            var fstat = fs.statSync(settings.base+'/'+url);
-            if(fstat.isDirectory())
+            var fstat = fs.statSync(settings.base+'/'+url+'/'+url+'/'+url+'.js');
+            if(fstat.isFile())
             {
-                fs.stat(settings.base+'/'+url+'/'+url,function(err,stat){
-                  if(!err)
-                  {
-                    if(stat.isDirectory())
-                    {
-                      req.url = "/"+url+"/"+url+"/"+url+".js";
-                      fs.createReadStream(settings.base+"/"+url+"/"+url+"/"+url+'.js').pipe(res);
-                      res.close();
-                    }
-                    else
-                    {
-                      req.url = "/"+url+"/"+url+".js";
-                      fs.createReadStream(settings.base+"/"+url+"/"+url+'.js').pipe(res);
-                      res.close();
-                    }
-                  }
-                  else
-                  {
-                    tryBower(url);
-                  }
-                });
+                req.url = "/node_modules/"+url+"/"+url+"/"+url+".js";
+                fs.createReadStream(settings.base+"/node_modules/"+url+"/"+url+"/"+url+".js").pipe(res);
+                res.close();
             }
             else
             {
@@ -92,6 +74,28 @@ module.exports = function(req,res,next)
         catch(e)
         {
             tryBower(url);
+        }
+      }
+
+      function tryLocal(url)
+      {
+        try
+        {
+            var fstat = fs.statSync(settings.base+'/'+url+'/'+url+'.js');
+            if(fstat.isFile())
+            {
+                req.url = "/"+url+"/"+url+".js";
+                fs.createReadStream(settings.base+"/"+url+"/"+url+".js").pipe(res);
+                res.close();
+            }
+            else
+            {
+                tryPackage(url);
+            }
+        }
+        catch(e)
+        {
+            tryPackage(url);
         }
       }
 
