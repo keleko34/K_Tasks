@@ -1,5 +1,4 @@
 var gulp = require('gulp')
-  , gutil = require('gulp-util')
   , modify = require('gulp-modify')
   , inject = require('gulp-inject')
   , replace = require('gulp-replace')
@@ -250,7 +249,7 @@ module.exports = function(res)
         fs.stat('./'+res.Component+'/'+res.Component+'.js',function(e){
           if(!e)
           {
-              gutil.log("Building local");
+              console.log("Building local");
               Command(res,true,false);
           }
           else
@@ -261,7 +260,7 @@ module.exports = function(res)
                       fs.stat('./'+res.Component+'/'+res.Component+'/'+res.Component+'.js',function(e){
                           if(!e)
                           {
-                              gutil.log("Building package");
+                              console.log("Building package");
                               Command(res,false,true);
                           }
                           else
