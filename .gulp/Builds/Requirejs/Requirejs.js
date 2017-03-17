@@ -55,7 +55,7 @@ module.exports = function(res)
             reE = /\}\)(?![\s\S]*}\))/m,
             reM = /(define\()(\[(.*?)\])/,
             reN = /(define\()(.*?)(function\((.*?)\))/;
-            
+
 
         var subModules = contents.match(reM)[0].replace(reM,"$3").replace(/\"/g,'').replace(/\'/g,'').split(',').filter(function(v){
             return (v.length !== 0);
@@ -148,7 +148,7 @@ module.exports = function(res)
         }));
 
         if(oem) _gulpsrc.pipe(gulp.dest(oem))
-        
+
         _gulpsrc.on('end',function(){
             if(counter === subFiles.length)
             {
@@ -214,15 +214,15 @@ module.exports = function(res)
     function Command(res,local,package)
     {
         console.log('\033[36mStarting to compile module:\033[37m',res.Component);
-          
+
         var buildFile = (local ? '/'+res.Component+'/'+res.Component+'.js' : ('/'+res.Component+'/'+res.Component+'/'+res.Component+'.js')),
             buildLocation = (local ? '/'+res.Component+'/Build' : ('/'+res.Component+'/'+res.Component+'/Build'))
-      
+
         return build(global.gulp.base+buildLocation,global.gulp.base+buildFile,function(glp){
             injector(global.gulp.base+buildLocation+'/'+res.Component+'.js',function(){
                 setTimeout(function(){
                   console.log('\033[36mRunning clojure compiler minification\033[37m');
-                  
+
                   gulp.src(global.gulp.base+buildLocation+'/'+res.Component+'.js')
                   .pipe(modify({
                       fileModifier: function(file,contents){

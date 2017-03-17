@@ -1,7 +1,4 @@
-var gulp = require('gulp')
-  , rename = require('gulp-rename')
-  , replace = require('gulp-replace')
-  , fs = require('fs')
+var gulp = require('gulp');
 
 module.exports = {
   firstCommand:'Name',

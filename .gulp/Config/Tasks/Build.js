@@ -2,55 +2,54 @@ var fs = require('fs')
 
 module.exports = {
   commands:{
-    Component: {
-      cmd: {
-        short: "-c",
-        long: "--component"
-      },
-      prompt: {
-        type: "list",
-        message: "Which module would you like to build?",
-        choices: function(){
-          return fs.readdirSync(global.gulp.base).filter(function(file){
-            return (fs.statSync(global.gulp.base+"/"+file).isDirectory() && global.gulp.config.ignore.indexOf(file) === -1);
-          });
-        }
-      },
-      action:'Build'
-    },
     Build: {
       cmd: {
         short: '-b',
-        long: '--builds'
+        long: '--build'
       },
       prompt: {
         type:"list",
         message: "Please choose a build library to use",
         choices: function(){
-          return Object.keys(global.gulp.config.Tasks.Build.builds);
+          return fs.readdirSync(global.gulp.global+"/Builds")
+          .concat((function(){
+            var localBuilds = [];
+            try{
+              localBuilds = fs.readdirSync(global.gulp.local+"/Builds")
+              .map(function(v){
+                return 'local/'+v;
+              });
+            }
+            catch(e){}
+            return localBuilds;
+          }()));
         }
       },
-      action:'end'
-    }
-  },
-  builds:fs.readdirSync(global.gulp.global+"/Builds")
-  .map(function(build){
-    return {name:build.replace('.js',''),lib:require(global.gulp.global+"/Builds/"+build)};
-  })
-  .concat((function(){
-    var localBuilds = [];
-    try{
-      localBuilds = fs.readdirSync(global.gulp.local+"/Builds").map(function(build){
-        return {name:build.replace('.js','').toLowerCase(),lib:require(global.gulp.local+"/Builds/"+build)};
-      });
-    }
-    catch(e){
+      action:function(v,values){
+        var isLocal = (v.indexOf('local/') !== -1),
+            src = (isLocal ? global.gulp.local : global.gulp.global).replace(/\\/g,'/')+"/Builds";
+        v = (isLocal ? v.replace('local/','') : v);
+        var config = require(src+"/"+v+"/config");
 
+        function rec(lvl,props)
+        {
+          Object.keys(props)
+          .forEach(function(prop){
+            if(typeof lvl[prop] === 'object')
+            {
+              rec(lvl[prop],props[prop]);
+            }
+            else
+            {
+              lvl[prop] = props[prop];
+            }
+          });
+        }
+
+        rec(global.gulp.config.Tasks.Create,config);
+        values.builder = require(src+"/"+v+"/"+v);
+        return global.gulp.config.Tasks.Build.firstCommand;
+      }
     }
-    return localBuilds;
-  }()))
-  .reduce(function(Obj,build){
-    Obj[build.name] = build.lib;
-    return Obj;
-  },{})
+  }
 }
