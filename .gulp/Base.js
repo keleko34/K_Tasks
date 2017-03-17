@@ -72,12 +72,14 @@ module.exports = (function(){
         process.exit(1);
       }
 
-      if(_values[_currentTaskCommand] === undefined || typeof _values[_currentTaskCommand] === 'object'){
+      runCommand(_currentTaskCommand,_taskCommands[_currentTaskCommand]);
+
+      /*if(_values[_currentTaskCommand] === undefined || typeof _values[_currentTaskCommand] === 'object'){
         runCommand(_currentTaskCommand,_taskCommands[_currentTaskCommand]);
       }
       else{
         toCommand(_currentTaskCommand,(typeof _taskCommands[_currentTaskCommand].action === 'function' ? _taskCommands[_currentTaskCommand].action(res,_values) : _taskCommands[_currentTaskCommand].action));
-      }
+      }*/
     }
   }
 

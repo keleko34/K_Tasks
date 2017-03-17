@@ -45,12 +45,8 @@ module.exports = {
             }
 
             rec(global.gulp.config.Tasks.Create,config);
-            values.templateFiles = fs.readdirSync(src+"/"+v)
-            .filter(function(file){return (file.indexOf('config.js') === -1);})
-            .map(function(file){
-              return (file.indexOf('.') === -1 ? src+"/"+v+"/"+file+"/**/*" : src+"/"+v+"/"+file);
-            });
-            return global.gulp.config.Tasks.Create.first;
+            values.templateFiles = src+"/"+v+"/Template/**/*";
+            return global.gulp.config.Tasks.Create.firstCommand;
           }
       }
   }
