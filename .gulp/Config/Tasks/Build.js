@@ -46,7 +46,7 @@ module.exports = {
           });
         }
 
-        rec(global.gulp.config.Tasks.Create,config);
+        rec(global.gulp.config.Tasks.Build,config);
         values.builder = require(src+"/"+v+"/"+v);
         return global.gulp.config.Tasks.Build.firstCommand;
       }
