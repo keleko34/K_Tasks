@@ -43,6 +43,7 @@
     "gulp-inject": "^3.0.0",
     "gulp-modify": "^0.1.1",
     "gulp-prompt": "^0.1.2",
+    "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
     "js-beautify": "^1.6.4",
     "mocha": "^3.1.2",

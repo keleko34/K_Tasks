@@ -3,6 +3,7 @@ module.exports = function(){
     fs = require('fs');
 
   global.gulp = {};
+  global.gulp.module = gulp;
   global.gulp.base = process.cwd().replace(/\\/g,"/");
   global.gulp.local = global.gulp.base+"/.gulp";
   global.gulp.node_module = __dirname;

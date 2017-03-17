@@ -72,7 +72,7 @@ module.exports = (function(){
         process.exit(1);
       }
 
-      if(_values[_currentTaskCommand] === undefined){
+      if(_values[_currentTaskCommand] === undefined || typeof _values[_currentTaskCommand] === 'object'){
         runCommand(_currentTaskCommand,_taskCommands[_currentTaskCommand]);
       }
       else{
