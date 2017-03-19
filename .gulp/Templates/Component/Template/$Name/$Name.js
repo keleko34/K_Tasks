@@ -6,5 +6,8 @@
 
 function $Name()
 {
+  /* ATTRIBUTES */
 
 }
+
+/* PROTOTYPES */

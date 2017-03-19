@@ -52,9 +52,9 @@ module.exports = (function(){
 
   /* This method acts as a filter for which command to run next based on the action property */
   function toCommand(commandName,action){
-
+    if(!action) console.error(commandName,' does not have an "action" to perform, please assign it one');
     /* exit process on command action of 'exit' */
-    if(action.toLowerCase() === 'exit'){
+    if(!action || action.toLowerCase() === 'exit'){
       console.error('Exiting process due to command; ',commandName);
       process.exit(1);
     }
