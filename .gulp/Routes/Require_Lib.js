@@ -24,7 +24,6 @@ module.exports = function(req,res,next)
                   var main = JSON.parse(fs.readFileSync(settings.base+"/bower_components/"+url+"/bower.json")).main;
                   req.url = "/bower_components/"+url+"/"+main;
                   fs.createReadStream(settings.base+"/bower_components/"+url+"/"+main).pipe(res);
-                  res.close();
               }
               else
               {
@@ -46,7 +45,6 @@ module.exports = function(req,res,next)
               {
                   req.url = "/node_modules/"+url+"/"+url+"/"+url+".js";
                   fs.createReadStream(settings.base+"/node_modules/"+url+"/"+url+"/"+url+".js").pipe(res);
-                  res.close();
               }
           }
           catch(e)
@@ -64,7 +62,6 @@ module.exports = function(req,res,next)
             {
                 req.url = "/"+url+"/"+url+"/"+url+".js";
                 fs.createReadStream(settings.base+"/"+url+"/"+url+"/"+url+".js").pipe(res);
-                res.close();
             }
             else
             {
@@ -86,7 +83,6 @@ module.exports = function(req,res,next)
             {
                 req.url = "/"+url+"/"+url+".js";
                 fs.createReadStream(settings.base+"/"+url+"/"+url+".js").pipe(res);
-                res.close();
             }
             else
             {
