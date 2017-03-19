@@ -51,7 +51,7 @@ module.exports = (function(){
   }
 
   /* This method acts as a filter for which command to run next based on the action property */
-  function toCommand(commandName,action){
+  function toCommand(commandName,action,res){
     if(!action) console.error(commandName,' does not have an "action" to perform, please assign it one');
     /* exit process on command action of 'exit' */
     if(!action || action.toLowerCase() === 'exit'){
@@ -72,14 +72,12 @@ module.exports = (function(){
         process.exit(1);
       }
 
-      runCommand(_currentTaskCommand,_taskCommands[_currentTaskCommand]);
-
-      /*if(_values[_currentTaskCommand] === undefined || typeof _values[_currentTaskCommand] === 'object'){
+      if(_values[_currentTaskCommand] === undefined || typeof _values[_currentTaskCommand] === 'object' || _taskCommands[_currentTaskCommand].repeatable){
         runCommand(_currentTaskCommand,_taskCommands[_currentTaskCommand]);
       }
       else{
-        toCommand(_currentTaskCommand,(typeof _taskCommands[_currentTaskCommand].action === 'function' ? _taskCommands[_currentTaskCommand].action(res,_values) : _taskCommands[_currentTaskCommand].action));
-      }*/
+        toCommand(_currentTaskCommand,(typeof _taskCommands[_currentTaskCommand].action === 'function' ? _taskCommands[_currentTaskCommand].action(res,_values) : _taskCommands[_currentTaskCommand].action),res);
+      }
     }
   }
 
@@ -131,11 +129,11 @@ module.exports = (function(){
     /* here we allow the task to filter the current values set and do something based on that */
     _filter(commandName,_values,function(action){
       if(action.toLowerCase() === 'exit'){
-        toCommand(commandName,action);
+        toCommand(commandName,action,res);
       }
     });
 
-    toCommand(commandName,(typeof options.action === 'function' ? options.action(res,_values) : options.action));
+    toCommand(commandName,(typeof options.action === 'function' ? options.action(res,_values) : options.action),res);
   }
 
   function Base(){
@@ -169,7 +167,7 @@ module.exports = (function(){
     /* add helper for options method after reading all cli commands */
     cli.option('-o, --options','Displays helper for options',cli.help.bind(cli)).parse(process.argv);
     /* run first command in the list */
-    toCommand(_currentTaskCommand,_currentTaskCommand);
+    toCommand(_currentTaskCommand,_currentTaskCommand,{});
 
     return _gulp;
   }
