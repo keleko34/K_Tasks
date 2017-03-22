@@ -24,6 +24,8 @@ module.exports = function(res)
     }))
     .pipe(gap.appendText('\r\n'+res.Name+'.prototype.k_html = "'+html.replace(/[\r\n]/g,'').replace(/[\"]/g,"'")+'";'
                         +'\r\n'+res.Name+'.prototype.k_css = "'+css.replace(/[\r\n]/g,'').replace(/[\"]/g,"'")+'";'))
+    .pipe(gap.prependText('if(!K_Components) K_Components = {};\r\nK_Components["'+res.Name+'"] = (function(){\r\n\t'))
+    .pipe(gap.appendText('\r\n\treturn '+res.Name+';\r\n}());'))
     .pipe(gulp.dest(_dest))
     .pipe(closureCompiler({
       compilerPath:"./compiler.jar",
@@ -49,6 +51,8 @@ module.exports = function(res)
     }))
     .pipe(gap.appendText('\r\n'+res.Name+'.prototype.kcms_html = "'+html.replace(/[\r\n]/g,'').replace(/[\"]/g,"'")+'";'
                         +'\r\n'+res.Name+'.prototype.kcms_css = "'+css.replace(/[\r\n]/g,'').replace(/[\"]/g,"'")+'";'))
+    .pipe(gap.prependText('if(!KCMS_Components) KCMS_Components = {};\r\nKCMS_Components["'+res.Name+'"] = (function(){\r\n\t'))
+    .pipe(gap.appendText('\r\n\treturn '+res.Name+';\r\n}());'))
     .pipe(rename({
       basename: "temp",
     }))
