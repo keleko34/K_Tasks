@@ -12,7 +12,7 @@ module.exports = {
         type:'list',
         message:'What is the name of the component you would like to build?',
         choices:function(){
-          return fs.readdirSync(global.gulp.base+"/app/components");
+          return fs.readdirSync(global.gulp.base+global.gulp.config.Tasks.Build.base);
         }
       },
       action:'Channel'
