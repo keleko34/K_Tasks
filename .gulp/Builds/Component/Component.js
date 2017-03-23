@@ -11,8 +11,9 @@ var fs = require('fs'),
 module.exports = function(res)
 {
   console.log('\033[36mCompiling:\033[37m',res.Name,' \033[36mFor channel:\033[37m',res.Channel);
-  var _dest = './app/components/'+res.Name+(res.Channel !== 'cms' ? '/build/'+res.Channel : '/cms'),
-      _dir = global.gulp.base+"/app/components/"+res.Name+(res.Channel === 'cms' ? '/cms' : (res.BuildFrom !== 'dev' ? '/build/'+res.BuildFrom : '')),
+  var _base = global.gulp.config.Tasks.Build.base,
+      _dest = '.'+_base+'/'+res.Name+(res.Channel !== 'cms' ? '/build/'+res.Channel : '/cms'),
+      _dir = global.gulp.base+_base+'/'+res.Name+(res.Channel === 'cms' ? '/cms' : (res.BuildFrom !== 'dev' ? '/build/'+res.BuildFrom : '')),
       _devfiles = ['js'];
 
   if(res.BuildFrom === 'dev')

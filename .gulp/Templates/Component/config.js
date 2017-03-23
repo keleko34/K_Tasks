@@ -2,7 +2,7 @@ var gulp = require('gulp');
 
 module.exports = {
   firstCommand:'Name',
-  destination:"./app/components",
+  destination:"./components",
   commands:{
     Name:{
       cmd:{

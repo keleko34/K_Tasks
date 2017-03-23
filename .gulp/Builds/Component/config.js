@@ -52,5 +52,6 @@ module.exports = {
       },
       action:'end'
     }
-  }
+  },
+  base:'/components'
 }
