@@ -53,19 +53,24 @@ module.exports = function(res)
       try
       {
         var dir = fs.readdirSync(global.gulp.base).filter(function(file){
-          return (file !== 'node_modules' && file !== 'bower_components');
-        });
+            return (['node_modules','bower_components','LICENSE'].indexOf(file) === -1 && file.indexOf('.') === -1);
+          });
         for(var x=0,len=dir.length;x<len;x++)
         {
           var stat = fs.statSync(global.gulp.base+"/"+dir[x]);
           if(stat.isDirectory())
           {
-            var subdir = fs.readdirSync(global.gulp.base+"/"+dir[x]);
+            var subdir = fs.readdirSync(global.gulp.base+"/"+dir[x]).filter(function(file){
+				return (['node_modules','bower_components','LICENSE'].indexOf(file) === -1 && file.indexOf('.') === -1);
+			});
             if(subdir.indexOf(name) !== -1)
             {
               var statLocal = fs.statSync(global.gulp.base+"/"+dir[x]+"/"+name+"/"+name+".js");
               
-              if(statLocal.isFile()) return global.gulp.base+"/"+dir[x]+"/"+name+"/"+name+".js"
+              if(statLocal.isFile())
+			  {
+				  return "/"+dir[x]+"/"+name+"/"+name+".js";
+			  }
             }
           }
         }
