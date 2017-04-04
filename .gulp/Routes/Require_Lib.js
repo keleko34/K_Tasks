@@ -22,6 +22,15 @@ module.exports = function(req,res,next)
               if(fstat.isDirectory())
               {
                   var main = JSON.parse(fs.readFileSync(settings.base+"/bower_components/"+url+"/bower.json")).main;
+                  
+                  if(typeof main === 'object' && main.length !== undefined)
+                  {
+                    main = main.reduce(function(s,v){
+                      if(v.indexOf('.js') !== -1) s = v;
+                      return s;
+                    },"");
+                  }
+                  
                   req.url = "/bower_components/"+url+"/"+main;
                   fs.createReadStream(settings.base+"/bower_components/"+url+"/"+main).pipe(res);
               }
@@ -86,8 +95,42 @@ module.exports = function(req,res,next)
             }
             else
             {
-                tryPackage(url);
+                tryLocalSubs(url);
             }
+        }
+        catch(e)
+        {
+            tryLocalSubs(url);
+        }
+      }
+    
+      function tryLocalSubs(url)
+      {
+        try
+        {
+          var dir = fs.readdirSync(global.gulp.base).filter(function(file){
+            return (['node_modules','bower_components','LICENSE'].indexOf(file) === -1 && file.indexOf('.') === -1);
+          });
+          for(var x=0,len=dir.length;x<len;x++)
+          {
+            var stat = fs.statSync(global.gulp.base+"/"+dir[x]);
+            if(stat.isDirectory())
+            {
+              var subdir = fs.readdirSync(global.gulp.base+"/"+dir[x]);
+              if(subdir.indexOf(url) !== -1)
+              {
+                var statLocal = fs.statSync(global.gulp.base+"/"+dir[x]+"/"+url+"/"+url+".js");
+
+                if(statLocal.isFile())
+                {
+                  req.url = "/"+dir[x]+"/"+url+"/"+url+".js";
+                  fs.createReadStream(global.gulp.base+"/"+dir[x]+"/"+url+"/"+url+".js").pipe(res);
+                  return null;
+                }
+              }
+            }
+          }
+          return tryPackage(url);
         }
         catch(e)
         {

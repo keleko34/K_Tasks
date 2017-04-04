@@ -48,7 +48,7 @@
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
     "js-beautify": "^1.6.4",
-    "mocha": "^3.1.2",
-    "open": "0.0.5"
+    "open": "0.0.5",
+    "tape": "^4.6.3"
   }
 }

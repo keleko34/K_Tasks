@@ -47,6 +47,35 @@ module.exports = function(res)
             return null;
         }
     }
+  
+    function tryLocals(name)
+    {
+      try
+      {
+        var dir = fs.readdirSync(global.gulp.base).filter(function(file){
+          return (file !== 'node_modules' && file !== 'bower_components');
+        });
+        for(var x=0,len=dir.length;x<len;x++)
+        {
+          var stat = fs.statSync(global.gulp.base+"/"+dir[x]);
+          if(stat.isDirectory())
+          {
+            var subdir = fs.readdirSync(global.gulp.base+"/"+dir[x]);
+            if(subdir.indexOf(name) !== -1)
+            {
+              var statLocal = fs.statSync(global.gulp.base+"/"+dir[x]+"/"+name+"/"+name+".js");
+              
+              if(statLocal.isFile()) return global.gulp.base+"/"+dir[x]+"/"+name+"/"+name+".js"
+            }
+          }
+        }
+        return tryBower(name);
+      }
+      catch(e)
+      {
+        return tryBower(name);
+      }
+    }
 
     function modifyFileContents(file,contents)
     {
@@ -109,7 +138,7 @@ module.exports = function(res)
                     if(file.indexOf('.') === -1 && file.indexOf('/') === -1)
                     {
                         //we have a bower or node_module
-                        var module_path = tryBower(file);
+                        var module_path = tryLocals(file);
                         if(module_path){
                             return global.gulp.base+module_path;
                         }
